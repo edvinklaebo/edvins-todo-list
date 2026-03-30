@@ -82,7 +82,7 @@ function TodoApp() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-start justify-center pt-16 px-4">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-1">📝 Live Todo List</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-1">📝 Edvin's Slave Tasks</h1>
         <p className="text-sm text-gray-500 mb-6">
           {completedCount}/{todos.length} tasks completed
         </p>
