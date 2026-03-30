@@ -19,6 +19,9 @@ function TodoApp() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
+  const [notifyOnComplete, setNotifyOnComplete] = useState(
+    () => localStorage.getItem("notifyOnComplete") === "true"
+  );
   const { notify } = useNotifications();
 
   useEffect(() => {
@@ -48,6 +51,12 @@ function TodoApp() {
 
   const toggleComplete = async (id, completed) => {
     await updateDoc(doc(db, "todos", id), { completed: !completed });
+    if (!completed && notifyOnComplete) {
+      const remaining = todos.filter((t) => t.id !== id && !t.completed);
+      if (remaining.length === 0) {
+        notify("🎉 All tasks complete!", { body: "Great job — you finished everything!" });
+      }
+    }
   };
 
   const deleteTodo = async (id) => {
@@ -82,13 +91,29 @@ function TodoApp() {
 
   const completedCount = todos.filter((t) => t.completed).length;
 
+  const handleNotifyOnCompleteChange = (e) => {
+    const value = e.target.checked;
+    setNotifyOnComplete(value);
+    localStorage.setItem("notifyOnComplete", value);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-start justify-center pt-16 px-4">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-1">📝 Edvin's Slave Tasks</h1>
-        <p className="text-sm text-gray-500 mb-6">
+        <p className="text-sm text-gray-500 mb-4">
           {completedCount}/{todos.length} tasks completed
         </p>
+        <label className="flex items-center gap-2 text-sm text-gray-500 mb-6 cursor-pointer select-none w-fit">
+          <input
+            type="checkbox"
+            checked={notifyOnComplete}
+            onChange={handleNotifyOnCompleteChange}
+            className="w-4 h-4 accent-blue-500 cursor-pointer"
+            aria-label="Notify me when all tasks are complete"
+          />
+          🔔 Notify me when all tasks are complete
+        </label>
 
         {/* Add task input */}
         <div className="flex gap-2 mb-6">
