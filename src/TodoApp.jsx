@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "./firebase";
+import { useNotifications } from "./useNotifications";
 import {
   collection,
   onSnapshot,
@@ -18,6 +19,7 @@ function TodoApp() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState("");
+  const { notify } = useNotifications();
 
   useEffect(() => {
     const q = query(collection(db, "todos"), orderBy("createdAt", "asc"));
@@ -37,6 +39,7 @@ function TodoApp() {
       createdAt: serverTimestamp(),
     });
     setNewTodo("");
+    notify("Task added!", { body: text });
   };
 
   const handleKeyDown = (e) => {
