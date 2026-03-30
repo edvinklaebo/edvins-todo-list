@@ -1,0 +1,17 @@
+{
+  "name": "Edvin's Todo List",
+  "short_name": "Todo List",
+  "description": "A live todo list with desktop notifications",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
